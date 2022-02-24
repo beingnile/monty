@@ -80,11 +80,11 @@ $ USAGE: monty file
 
 ```sh
 
-$ Error: Can't open file <file>
+$ Error: Can\'t open file <file>
 
 ```
 
-Where <file> is the name of the file
+Where \<file> is the name of the file
 
 * If the file contains an invalid instruction, the program prints:
 
