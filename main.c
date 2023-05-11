@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "monty.h"
 
+#define BUFSIZE 256
 /**
  * main - Program's entry point
  *
@@ -14,38 +16,56 @@ int main(int argc, char *argv[])
 {
 	FILE *bytefile;
 	char *line;
-	int buffer_size = 256;
 	int line_count = 0;
+	char **cmd;
 
-	/* Check for argument count */
-	if (argc < 2 || argc > 2)
+	if (argc < 2 || argc > 2) /*Check for argument count*/
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
-	/*
-	 * Try opening the file, if for any reason file doesn't
-	 * open, print an error to stderr
-	 */
 	bytefile = fopen(argv[1], "r");
-
 	if (bytefile == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
-	/* Get lines of file */
-	line = malloc(buffer_size + 1);
-	while (fgets(line, buffer_size, bytefile) != NULL)
+	line = malloc(BUFSIZE + 1);
+	if (line == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	while (fgets(line, BUFSIZE, bytefile) != NULL) /*Read and parse lines*/
 	{
 		line_count++;
-		printf("Contents of line[%d]: %s\n", line_count, line);
+		cmd = parse_buf(line);
+		if (cmd[1] == NULL)
+			printf("ln[%d]: %s\n", line_count, cmd[0]);
+		else
+			printf("ln[%d]: %s %s\n", line_count, cmd[0], cmd[1]);
 	}
-
 	free(line);
 	fclose(bytefile);
 
 	return (0);
+}
+
+/**
+ * parse_buf - Removes any leading and trailing whitespaces
+ * from bytecode
+ *
+ * @line: Pointer to line buffer
+ *
+ * Return: An array with the parsed commands, consisting
+ * of the opcode and it's arguments
+ */
+char **parse_buf(char *line)
+{
+	static char *tokens[2];
+
+	tokens[0] = strtok(line, " \t\n");
+	tokens[1] = strtok(NULL, " \t\n");
+
+	return (tokens);
 }
