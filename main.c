@@ -13,6 +13,9 @@
 int main(int argc, char *argv[])
 {
 	FILE *bytefile;
+	char *line;
+	int buffer_size = 256;
+	int line_count = 0;
 
 	/* Check for argument count */
 	if (argc < 2 || argc > 2)
@@ -33,8 +36,15 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	printf("File opens successfully\n");
+	/* Get lines of file */
+	line = malloc(buffer_size + 1);
+	while (fgets(line, buffer_size, bytefile) != NULL)
+	{
+		line_count++;
+		printf("Contents of line[%d]: %s\n", line_count, line);
+	}
 
+	free(line);
 	fclose(bytefile);
 
 	return (0);
