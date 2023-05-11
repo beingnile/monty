@@ -16,10 +16,9 @@ int main(int argc, char *argv[])
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
-	} else
-	{
-		printf("Yaay!, one argument: %s\n", argv[1]);
 	}
+
+	printf("Yaay!, one argument: %s\n", argv[1]);
 
 	return (0);
 }
