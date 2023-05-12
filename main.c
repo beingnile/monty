@@ -13,9 +13,8 @@ int main(int argc, char *argv[])
 {
 	FILE *bytefile;
 	char *line;
-	int line_count = 0;
+	unsigned int line_count = 0;
 	char **cmd;
-	/*char *opcode = "pall";*/
 
 	if (argc < 2 || argc > 2) /*Check for argument count*/
 	{
@@ -37,7 +36,7 @@ int main(int argc, char *argv[])
 	while (fgets(line, BUFSIZE, bytefile) != NULL) /*Read and parse lines*/
 	{
 		line_count++;
-		if (line[0] == '\n' || strspn(line, " \t\r\n") == strlen(line))
+		if (strspn(line, " \t\r\n") == strlen(line))
 			continue;
 		cmd = parse_buf(line);
 		if (strcmp(cmd[0], "push") != 0)
