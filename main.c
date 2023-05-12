@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "monty.h"
-
 #define BUFSIZE 256
+
 /**
  * main - Program's entry point
  *
@@ -18,6 +15,7 @@ int main(int argc, char *argv[])
 	char *line;
 	int line_count = 0;
 	char **cmd;
+	/*char *opcode = "pall";*/
 
 	if (argc < 2 || argc > 2) /*Check for argument count*/
 	{
@@ -39,11 +37,15 @@ int main(int argc, char *argv[])
 	while (fgets(line, BUFSIZE, bytefile) != NULL) /*Read and parse lines*/
 	{
 		line_count++;
+		if (line[0] == '\n' || strspn(line, " \t\r\n") == strlen(line))
+			continue;
 		cmd = parse_buf(line);
-		if (cmd[1] == NULL)
-			printf("ln[%d]: %s\n", line_count, cmd[0]);
-		else
-			printf("ln[%d]: %s %s\n", line_count, cmd[0], cmd[1]);
+		if (strcmp(cmd[0], "push") != 0)
+			cmd[1] = '\0';
+		printf("ln[%d]: %s ", line_count, cmd[0]);
+		if (cmd[1] != NULL)
+			printf("%s ", cmd[1]);
+		printf("-> Do %s operation\n", cmd[0]);
 	}
 	free(line);
 	fclose(bytefile);
