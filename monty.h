@@ -36,6 +36,7 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+void process_file(char *filename);
 char **parse_buf(char *line);
 
 #endif
