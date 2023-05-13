@@ -11,20 +11,35 @@
  */
 int main(int argc, char *argv[])
 {
-	FILE *bytefile;
-	char *line;
-	unsigned int line_count = 0;
-	char **cmd;
-
 	if (argc < 2 || argc > 2) /*Check for argument count*/
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	bytefile = fopen(argv[1], "r");
+
+	process_file(argv[1]);
+
+	return (0);
+}
+
+/**
+ * process_file - Opens and parses monty bytecode
+ *
+ * @filename: Name of monty bytecode
+ *
+ * Return: nothing
+ */
+void process_file(char *filename)
+{
+	FILE *bytefile;
+	char *line;
+	unsigned int line_count = 0;
+	char **cmd;
+
+	bytefile = fopen(filename, "r");
 	if (bytefile == NULL)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 	line = malloc(BUFSIZE + 1);
@@ -48,8 +63,6 @@ int main(int argc, char *argv[])
 	}
 	free(line);
 	fclose(bytefile);
-
-	return (0);
 }
 
 /**
